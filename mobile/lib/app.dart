@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'core/theme/app_theme.dart';
+import 'features/onboarding/onboarding_screen.dart';
 
 class TripCApp extends StatelessWidget {
   const TripCApp({super.key});
@@ -11,7 +12,7 @@ class TripCApp extends StatelessWidget {
       title: 'TripC',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light,
-      home: const Scaffold(body: Center(child: Text('TripC'))),
+      home: const OnboardingScreen(),
     );
   }
 }

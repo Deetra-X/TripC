@@ -18,6 +18,15 @@ abstract final class AppTheme {
           outline: AppColors.teal400,
         );
 
-    return ThemeData(colorScheme: colorScheme);
+    return ThemeData(
+      colorScheme: colorScheme,
+      filledButtonTheme: FilledButtonThemeData(
+        style: FilledButton.styleFrom(
+          minimumSize: const Size(180, 52),
+          padding: const EdgeInsets.symmetric(horizontal: 32),
+          textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+        ),
+      ),
+    );
   }
 }
