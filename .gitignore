@@ -1,3 +1,7 @@
 .idea/
 *.iml
 .vscode/
+
+# Local design references (palette, UI mockups)
+Color palatte/
+design/
