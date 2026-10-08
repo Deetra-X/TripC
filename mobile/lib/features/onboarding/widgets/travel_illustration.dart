@@ -2,7 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
-import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_palette.dart';
 
 enum Landmark { bridge, stupa, rock }
 
@@ -44,19 +44,19 @@ class TravelIllustration extends StatelessWidget {
                 s,
                 0.56,
                 0.06,
-                _Dot(size: s * 0.016, color: AppColors.teal900),
+                _Dot(size: s * 0.016, color: AppPalette.teal900),
               ),
               _at(
                 s,
                 0.08,
                 0.6,
-                _Dot(size: s * 0.022, color: AppColors.teal400),
+                _Dot(size: s * 0.022, color: AppPalette.teal400),
               ),
               _at(
                 s,
                 0.94,
                 0.56,
-                _Dot(size: s * 0.014, color: AppColors.teal600),
+                _Dot(size: s * 0.014, color: AppPalette.teal600),
               ),
               _at(s, 0.2, 0.36, _PlaceCard(place: place, rating: rating)),
               _at(
@@ -146,8 +146,8 @@ class _PlaceCard extends StatelessWidget {
         children: [
           const CircleAvatar(
             radius: 15,
-            backgroundColor: AppColors.teal100,
-            child: Icon(Icons.place, size: 16, color: AppColors.teal700),
+            backgroundColor: AppPalette.teal100,
+            child: Icon(Icons.place, size: 16, color: AppPalette.teal700),
           ),
           const SizedBox(width: 8),
           Column(
@@ -156,7 +156,10 @@ class _PlaceCard extends StatelessWidget {
             children: [
               Text(
                 place,
-                style: text.labelLarge?.copyWith(fontWeight: FontWeight.w600),
+                style: text.labelLarge?.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: AppPalette.ink900,
+                ),
               ),
               Row(
                 mainAxisSize: MainAxisSize.min,
@@ -164,10 +167,13 @@ class _PlaceCard extends StatelessWidget {
                   const Icon(
                     Icons.star_rounded,
                     size: 14,
-                    color: AppColors.teal600,
+                    color: AppPalette.teal600,
                   ),
                   const SizedBox(width: 2),
-                  Text(rating, style: text.labelSmall),
+                  Text(
+                    rating,
+                    style: text.labelSmall?.copyWith(color: AppPalette.ink600),
+                  ),
                 ],
               ),
             ],
@@ -195,7 +201,7 @@ class _Thumbnail extends StatelessWidget {
         gradient: const LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [AppColors.teal400, AppColors.teal700],
+          colors: [AppPalette.teal400, AppPalette.teal700],
         ),
         boxShadow: _shadow,
       ),
@@ -219,7 +225,7 @@ class _ScenePainter extends CustomPainter {
     );
     final clip = Path()..addOval(circle);
 
-    canvas.drawShadow(clip, AppColors.teal900, 8, false);
+    canvas.drawShadow(clip, AppPalette.teal900, 8, false);
     canvas.save();
     canvas.clipPath(clip);
     canvas.translate(circle.left, circle.top);
@@ -247,7 +253,7 @@ class _ScenePainter extends CustomPainter {
         ..shader = const LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [AppColors.teal100, Colors.white],
+          colors: [AppPalette.teal100, Colors.white],
         ).createShader(sky),
     );
     canvas.drawCircle(const Offset(74, 24), 7, Paint()..color = Colors.white);
@@ -264,8 +270,8 @@ class _ScenePainter extends CustomPainter {
           ..lineTo(peak.dx + halfWidth, 80)
           ..lineTo(peak.dx - halfWidth, 80)
           ..close(),
-        AppColors.teal400,
-        AppColors.teal600,
+        AppPalette.teal400,
+        AppPalette.teal600,
         splitX: peak.dx,
       );
     }
@@ -278,14 +284,14 @@ class _ScenePainter extends CustomPainter {
         ..lineTo(100, 100)
         ..lineTo(0, 100)
         ..close(),
-      Paint()..color = AppColors.teal700,
+      Paint()..color = AppPalette.teal700,
     );
   }
 
   /// Nine Arch Bridge, Ella, with a train crossing.
   void _paintBridge(Canvas canvas) {
     const span = Rect.fromLTRB(-2, 57, 102, 100);
-    canvas.drawRect(span, Paint()..color = AppColors.teal700);
+    canvas.drawRect(span, Paint()..color = AppPalette.teal700);
 
     final arches = Path();
     for (var i = 0; i < 5; i++) {
@@ -296,11 +302,11 @@ class _ScenePainter extends CustomPainter {
     }
     canvas.drawPath(
       Path.combine(PathOperation.difference, Path()..addRect(span), arches),
-      Paint()..color = AppColors.teal100,
+      Paint()..color = AppPalette.teal100,
     );
 
-    final carriage = Paint()..color = AppColors.teal900;
-    final window = Paint()..color = AppColors.teal100;
+    final carriage = Paint()..color = AppPalette.teal900;
+    final window = Paint()..color = AppPalette.teal100;
     for (var i = 0; i < 4; i++) {
       final left = 16.0 + i * 16.5;
       canvas.drawRRect(
@@ -318,7 +324,7 @@ class _ScenePainter extends CustomPainter {
 
   /// White dagoba in the style of Ruwanwelisaya, Anuradhapura.
   void _paintStupa(Canvas canvas) {
-    const shade = AppColors.teal100;
+    const shade = AppPalette.teal100;
     canvas.drawRect(
       const Rect.fromLTRB(20, 72, 80, 78),
       Paint()..color = Colors.white,
@@ -371,12 +377,12 @@ class _ScenePainter extends CustomPainter {
       ..lineTo(76, 70)
       ..lineTo(80, 84)
       ..close();
-    _twoTone(canvas, rock, AppColors.teal800, AppColors.teal900, splitX: 60);
+    _twoTone(canvas, rock, AppPalette.teal800, AppPalette.teal900, splitX: 60);
 
     // Forest canopy on the flat summit.
     canvas.save();
     canvas.clipRect(const Rect.fromLTRB(0, 0, 100, 41));
-    canvas.drawPath(rock, Paint()..color = AppColors.teal600);
+    canvas.drawPath(rock, Paint()..color = AppPalette.teal600);
     canvas.restore();
   }
 
@@ -389,7 +395,7 @@ class _ScenePainter extends CustomPainter {
         ..lineTo(100, 100)
         ..lineTo(0, 100)
         ..close(),
-      Paint()..color = AppColors.teal600,
+      Paint()..color = AppPalette.teal600,
     );
     _paintPine(canvas, const Offset(12, 88), 30);
     _paintPine(canvas, const Offset(25, 92), 20);
@@ -400,7 +406,7 @@ class _ScenePainter extends CustomPainter {
     final width = height * 0.55;
     canvas.drawRect(
       Rect.fromLTWH(base.dx - 1, base.dy - height * 0.15, 2, height * 0.15),
-      Paint()..color = AppColors.teal900,
+      Paint()..color = AppPalette.teal900,
     );
     final tree = Path();
     for (var i = 0; i < 3; i++) {
@@ -415,8 +421,8 @@ class _ScenePainter extends CustomPainter {
     _twoTone(
       canvas,
       tree,
-      AppColors.teal800,
-      AppColors.teal900,
+      AppPalette.teal800,
+      AppPalette.teal900,
       splitX: base.dx,
     );
   }

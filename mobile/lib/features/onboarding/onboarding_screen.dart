@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../core/theme/theme_context.dart';
+import '../login/auth_gate.dart';
 import 'widgets/travel_illustration.dart';
 
 class _Slide {
@@ -68,9 +70,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         duration: const Duration(milliseconds: 400),
         curve: Curves.easeOutCubic,
       );
+    } else {
+      Navigator.of(context)
+          .pushReplacement(MaterialPageRoute(builder: (_) => const AuthGate()));
     }
-    // On the last slide this will open interest profiling once that screen
-    // exists.
   }
 
   @override
@@ -79,7 +82,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     final slide = _slides[_page];
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle.dark,
+      value: context.overlayStyle,
       child: Scaffold(
         body: SafeArea(
           child: Column(
