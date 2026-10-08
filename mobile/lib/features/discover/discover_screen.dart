@@ -12,7 +12,10 @@ import 'widgets/section_header.dart';
 
 /// The home screen: personalised picks, places nearby and popular spots.
 class DiscoverScreen extends StatefulWidget {
-  const DiscoverScreen({super.key});
+  const DiscoverScreen({super.key, this.onOpenMap});
+
+  /// Opens the full map, e.g. by switching to the Map tab.
+  final VoidCallback? onOpenMap;
 
   @override
   State<DiscoverScreen> createState() => _DiscoverScreenState();
@@ -66,7 +69,7 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
           const SizedBox(height: 32),
           NearYouSection(
             places: nearbyPlaces,
-            onOpenMap: _comingSoon,
+            onOpenMap: widget.onOpenMap ?? _comingSoon,
             onOpenPlace: (_) => _comingSoon(),
           ),
           const SizedBox(height: 24),

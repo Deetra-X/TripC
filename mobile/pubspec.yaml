@@ -10,6 +10,11 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_animate: ^4.5.2
+  flutter_map: ^8.3.2
+  geolocator: ^14.1.1
+  http: ^1.6.0
+  latlong2: ^0.10.1
+  url_launcher: ^6.3.3
 
 dev_dependencies:
   flutter_test:
@@ -21,6 +26,9 @@ flutter:
 
   assets:
     - assets/fonts/manrope/OFL.txt
+    # Places exported from assets/Map/*.xlsx by tool/export_places.py,
+    # until the Supabase database is connected.
+    - assets/data/places.json
 
   # Manrope (SIL Open Font License), bundled so it works offline.
   fonts:

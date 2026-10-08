@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:tripc/features/map/map_screen.dart';
+import 'package:tripc/features/map/widgets/map_markers.dart';
 
 import 'test_app.dart';
 
@@ -78,11 +80,30 @@ void main() {
 
     await tester.tap(find.byTooltip('Saved'));
     await tester.pumpAndSettle();
-    expect(find.text('Saved places'), findsOneWidget);
+    expect(find.text('Favourites'), findsOneWidget);
 
     await tester.tap(find.byTooltip('Profile'));
     await tester.pumpAndSettle();
     expect(find.text('nimal@example.com'), findsOneWidget);
     expect(find.text('Log out'), findsOneWidget);
+  });
+
+  testWidgets('Open map on Discover switches to the Map tab', (tester) async {
+    await _pumpHome(tester);
+    expect(find.byType(MapScreen), findsNothing);
+
+    await tester.scrollUntilVisible(
+      find.text('Open map'),
+      300,
+      scrollable: _page,
+    );
+    // Bring it clear of the floating navigation bar before tapping.
+    await tester.ensureVisible(find.text('Open map'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Open map'));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(MapScreen), findsOneWidget);
+    expect(find.byType(AttractionMarker), findsWidgets);
   });
 }

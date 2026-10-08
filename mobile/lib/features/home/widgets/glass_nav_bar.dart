@@ -94,7 +94,7 @@ class _NavButton extends StatelessWidget {
             duration: const Duration(milliseconds: 300),
             curve: AppMotion.standard,
             height: 52,
-            padding: EdgeInsets.symmetric(horizontal: selected ? 18 : 16),
+            padding: EdgeInsets.symmetric(horizontal: selected ? 14 : 12),
             decoration: BoxDecoration(
               color: selected
                   ? _selected.withValues(alpha: 0.14)

@@ -5,25 +5,29 @@ import 'package:tripc/core/theme/app_theme.dart';
 import 'package:tripc/core/theme/theme_controller.dart';
 import 'package:tripc/features/home/home_screen.dart';
 
+import 'fakes.dart';
+
 /// Wraps [home] the way TripCApp does: auth, the theme choice and both
-/// themes.
+/// themes. The map gets fake GPS, data and tiles, so tests stay offline.
 Widget testApp({
   required AuthService auth,
   required ThemeController theme,
   required Widget home,
 }) {
-  return AuthScope(
-    auth: auth,
-    child: ThemeScope(
-      controller: theme,
-      child: ValueListenableBuilder<ThemeMode>(
-        valueListenable: theme,
-        builder: (_, mode, _) => MaterialApp(
-          debugShowCheckedModeBanner: false,
-          theme: AppTheme.light,
-          darkTheme: AppTheme.dark,
-          themeMode: mode,
-          home: home,
+  return fakeMapDependencies(
+    child: AuthScope(
+      auth: auth,
+      child: ThemeScope(
+        controller: theme,
+        child: ValueListenableBuilder<ThemeMode>(
+          valueListenable: theme,
+          builder: (_, mode, _) => MaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: AppTheme.light,
+            darkTheme: AppTheme.dark,
+            themeMode: mode,
+            home: home,
+          ),
         ),
       ),
     ),
