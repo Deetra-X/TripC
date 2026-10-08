@@ -233,7 +233,7 @@ class _ForYouScreenState extends State<ForYouScreen> {
       child: ListView(
         padding: const EdgeInsets.only(top: AppSpace.lg, bottom: 120),
         children: [
-          _Header(name: user.name, onOpenProfile: widget.onOpenProfile),
+          _Header(user: user, onOpenProfile: widget.onOpenProfile),
           const SizedBox(height: AppSpace.lg),
           _ContextStrip(
             area: _area(position),
@@ -326,9 +326,9 @@ class _ForYouScreenState extends State<ForYouScreen> {
 }
 
 class _Header extends StatelessWidget {
-  const _Header({required this.name, required this.onOpenProfile});
+  const _Header({required this.user, required this.onOpenProfile});
 
-  final String name;
+  final AuthUser user;
   final VoidCallback onOpenProfile;
 
   @override
@@ -338,7 +338,7 @@ class _Header extends StatelessWidget {
       child: Row(
         children: [
           Expanded(child: Text('For you', style: context.text.displaySmall)),
-          ProfileButton(name: name, onTap: onOpenProfile),
+          ProfileButton(user: user, onTap: onOpenProfile),
         ],
       ),
     );

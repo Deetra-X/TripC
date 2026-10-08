@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 
-import '../theme/app_palette.dart';
+import '../auth/auth_service.dart';
 import '../theme/theme_context.dart';
+import 'user_avatar.dart';
 
-/// The user's initial in a champagne circle, opening their profile.
+/// The user's profile picture, opening their profile.
 class ProfileButton extends StatelessWidget {
-  const ProfileButton({super.key, required this.name, required this.onTap});
+  const ProfileButton({super.key, required this.user, required this.onTap});
 
-  final String name;
+  final AuthUser user;
   final VoidCallback onTap;
 
   @override
@@ -16,23 +17,10 @@ class ProfileButton extends StatelessWidget {
       message: 'Your profile',
       child: GestureDetector(
         onTap: onTap,
-        child: Container(
-          width: 48,
-          height: 48,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: AppPalette.champagne100,
-            border: Border.all(color: context.colors.hairline),
-          ),
-          child: Text(
-            name.isEmpty ? '?' : name[0].toUpperCase(),
-            style: const TextStyle(
-              color: AppPalette.ink900,
-              fontSize: 19,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
+        child: UserAvatar(
+          name: user.name,
+          avatar: user.avatar,
+          border: Border.all(color: context.colors.hairline),
         ),
       ),
     );

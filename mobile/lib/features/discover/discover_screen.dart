@@ -49,6 +49,7 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
         children: [
           DiscoverHeader(
             firstName: user.name.split(' ').first,
+            avatar: user.avatar,
             onNotifications: _comingSoon,
           ),
           const SizedBox(height: 20),

@@ -7,6 +7,7 @@ import 'package:tripc/features/home/home_screen.dart';
 import 'package:tripc/features/login/auth_gate.dart';
 import 'package:tripc/features/login/login_screen.dart';
 import 'package:tripc/features/login/signup_screen.dart';
+import 'package:tripc/features/profile/settings_screen.dart';
 
 import 'test_app.dart';
 
@@ -62,13 +63,27 @@ void main() {
     expect(find.byType(HomeScreen), findsOneWidget);
     expect(find.text('Hello, Nimal'), findsOneWidget);
 
-    // Logging out from the Profile tab returns to the login page.
+    // Logging out from Settings returns to the login page.
     await tester.tap(find.byTooltip('Profile'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byTooltip('Settings'));
+    await tester.pumpAndSettle();
+    await tester.scrollUntilVisible(
+      find.text('Log out'),
+      200,
+      scrollable: find
+          .descendant(
+            of: find.byType(SettingsScreen),
+            matching: find.byType(Scrollable),
+          )
+          .first,
+    );
     await tester.pumpAndSettle();
     await tester.tap(find.text('Log out'));
     await tester.pumpAndSettle();
     expect(find.byType(LoginScreen), findsOneWidget);
-    expect(find.byType(HomeScreen), findsNothing);
+    expect(find.byType(HomeScreen, skipOffstage: false), findsNothing);
+    expect(find.byType(SettingsScreen, skipOffstage: false), findsNothing);
 
     // Wrong password is rejected, the right one gets in.
     await tester.enterText(_field('Email'), 'nimal@example.com');

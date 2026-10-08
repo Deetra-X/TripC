@@ -10,6 +10,7 @@ import 'package:tripc/core/theme/theme_controller.dart';
 import 'package:tripc/core/widgets/ambient_background.dart';
 import 'package:tripc/features/home/home_screen.dart';
 import 'package:tripc/features/login/auth_gate.dart';
+import 'package:tripc/features/profile/widgets/day_night_switch.dart';
 
 import 'test_app.dart';
 
@@ -20,15 +21,18 @@ double _contrast(Color a, Color b) {
   return (math.max(la, lb) + 0.05) / (math.min(la, lb) + 0.05);
 }
 
+// Home stays built under pages opened over it, such as Settings.
 Brightness _brightness(WidgetTester tester) =>
-    Theme.of(tester.element(find.byType(HomeScreen))).brightness;
+    Theme.of(tester.element(find.byType(HomeScreen, skipOffstage: false)))
+        .brightness;
 
 Color _backgroundColour(WidgetTester tester) => tester
     .widget<ColoredBox>(
       find
           .descendant(
-            of: find.byType(AmbientBackground),
-            matching: find.byType(ColoredBox),
+            of: find.byType(AmbientBackground, skipOffstage: false),
+            matching: find.byType(ColoredBox, skipOffstage: false),
+            skipOffstage: false,
           )
           .first,
     )
@@ -92,7 +96,7 @@ void main() {
     expect(_backgroundColour(tester), TripCColors.dark.background);
   });
 
-  testWidgets('the Profile appearance selector switches themes', (
+  testWidgets('the day and night switch in Settings changes the theme', (
     tester,
   ) async {
     final theme = await pumpSignedInHome(tester);
@@ -100,23 +104,50 @@ void main() {
 
     await tester.tap(find.byTooltip('Profile'));
     await tester.pumpAndSettle();
+    await tester.tap(find.byTooltip('Settings'));
+    await tester.pumpAndSettle();
     expect(find.text('Appearance'), findsOneWidget);
+    expect(find.text('DAY MODE'), findsOneWidget);
+    bool matchesPhone() => tester.widget<Switch>(find.byType(Switch)).value;
+    expect(matchesPhone(), isTrue);
 
-    await tester.tap(find.text('Dark'));
+    await tester.tap(find.byType(DayNightSwitch));
     await tester.pumpAndSettle();
     expect(theme.value, ThemeMode.dark);
     expect(_brightness(tester), Brightness.dark);
     expect(_backgroundColour(tester), TripCColors.dark.background);
+    expect(find.text('NIGHT MODE'), findsOneWidget);
+    expect(matchesPhone(), isFalse);
 
-    await tester.tap(find.text('Light'));
+    await tester.tap(find.byType(DayNightSwitch));
     await tester.pumpAndSettle();
     expect(theme.value, ThemeMode.light);
     expect(_brightness(tester), Brightness.light);
     expect(_backgroundColour(tester), TripCColors.light.background);
 
-    await tester.tap(find.text('System'));
+    // Matching the phone again follows the device, which is light here.
+    await tester.tap(find.byType(Switch));
     await tester.pumpAndSettle();
     expect(theme.value, ThemeMode.system);
+    expect(find.text('DAY MODE'), findsOneWidget);
+  });
+
+  testWidgets('turning off Match my phone keeps the current look', (
+    tester,
+  ) async {
+    tester.platformDispatcher.platformBrightnessTestValue = Brightness.dark;
+    addTearDown(tester.platformDispatcher.clearPlatformBrightnessTestValue);
+    final theme = await pumpSignedInHome(tester);
+    await tester.tap(find.byTooltip('Profile'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byTooltip('Settings'));
+    await tester.pumpAndSettle();
+    expect(find.text('NIGHT MODE'), findsOneWidget);
+
+    await tester.tap(find.byType(Switch));
+    await tester.pumpAndSettle();
+    expect(theme.value, ThemeMode.dark);
+    expect(_brightness(tester), Brightness.dark);
   });
 
   testWidgets('Discover lays out and uses dark colours in dark mode', (

@@ -115,8 +115,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           : const Text('Log in'),
                     ),
                     const SizedBox(height: 16),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    // Wraps on narrow screens or with large text.
+                    Wrap(
+                      alignment: WrapAlignment.center,
+                      crossAxisAlignment: WrapCrossAlignment.center,
                       children: [
                         const Text("Don't have an account?"),
                         TextButton(

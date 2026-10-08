@@ -84,8 +84,8 @@ void main() {
 
     await tester.tap(find.byTooltip('Profile'));
     await tester.pumpAndSettle();
-    expect(find.text('nimal@example.com'), findsOneWidget);
-    expect(find.text('Log out'), findsOneWidget);
+    expect(find.text('Nimal Perera'), findsOneWidget);
+    expect(find.byTooltip('Settings'), findsOneWidget);
   });
 
   testWidgets('Open map on Discover switches to the Map tab', (tester) async {

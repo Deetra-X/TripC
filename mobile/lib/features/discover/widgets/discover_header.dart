@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/theme/app_palette.dart';
+import '../../../core/auth/profile_avatar.dart';
 import '../../../core/theme/theme_context.dart';
 import '../../../core/widgets/glass.dart';
+import '../../../core/widgets/user_avatar.dart';
 
 /// Greeting, location, notifications, the headline and today's context.
 class DiscoverHeader extends StatelessWidget {
   const DiscoverHeader({
     super.key,
     required this.firstName,
+    required this.avatar,
     required this.onNotifications,
   });
 
   final String firstName;
+  final ProfileAvatar avatar;
   final VoidCallback onNotifications;
 
   @override
@@ -25,7 +28,7 @@ class DiscoverHeader extends StatelessWidget {
         children: [
           Row(
             children: [
-              _Avatar(initial: firstName.isEmpty ? '?' : firstName[0]),
+              _Avatar(name: firstName, avatar: avatar),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(
@@ -104,25 +107,17 @@ class DiscoverHeader extends StatelessWidget {
 }
 
 class _Avatar extends StatelessWidget {
-  const _Avatar({required this.initial});
+  const _Avatar({required this.name, required this.avatar});
 
-  final String initial;
+  final String name;
+  final ProfileAvatar avatar;
 
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
-    return Container(
-      width: 48,
-      height: 48,
-      alignment: Alignment.center,
+    return DecoratedBox(
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        gradient: const LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [AppPalette.teal600, AppPalette.teal900],
-        ),
-        border: Border.all(color: colors.surfaceRaised, width: 2),
         boxShadow: [
           BoxShadow(
             color: colors.accent.withValues(alpha: 0.3),
@@ -130,13 +125,10 @@ class _Avatar extends StatelessWidget {
           ),
         ],
       ),
-      child: Text(
-        initial.toUpperCase(),
-        style: const TextStyle(
-          color: Colors.white,
-          fontSize: 19,
-          fontWeight: FontWeight.w700,
-        ),
+      child: UserAvatar(
+        name: name,
+        avatar: avatar,
+        border: Border.all(color: colors.surfaceRaised, width: 2),
       ),
     );
   }

@@ -137,7 +137,7 @@ class _SavedScreenState extends State<SavedScreen>
         padding: const EdgeInsets.only(top: AppSpace.lg, bottom: 120),
         children: [
           _Header(
-            name: user.name,
+            user: user,
             onNewList: _newList,
             onOpenProfile: widget.onOpenProfile,
           ),
@@ -256,12 +256,12 @@ class _SavedScreenState extends State<SavedScreen>
 
 class _Header extends StatelessWidget {
   const _Header({
-    required this.name,
+    required this.user,
     required this.onNewList,
     required this.onOpenProfile,
   });
 
-  final String name;
+  final AuthUser user;
   final VoidCallback onNewList;
   final VoidCallback onOpenProfile;
 
@@ -284,7 +284,7 @@ class _Header extends StatelessWidget {
             icon: Icon(Icons.add_rounded, color: colors.textPrimary),
           ),
           const SizedBox(width: AppSpace.sm),
-          ProfileButton(name: name, onTap: onOpenProfile),
+          ProfileButton(user: user, onTap: onOpenProfile),
         ],
       ),
     );
